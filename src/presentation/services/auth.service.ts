@@ -1,4 +1,4 @@
-import { bcryptAdapter } from "../../config";
+import { bcryptAdapter, JwtAdapter } from "../../config";
 import { UserModel } from "../../data";
 import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
 
@@ -42,21 +42,25 @@ export class AuthService {
     }
 
     public async loginUser( loginUserDto: LoginUserDto ) {
-        const existUser = await UserModel.findOne({ email: loginUserDto.email })
-        if ( !existUser ) throw CustomError.notFound('User not found');
+        const user = await UserModel.findOne({ email: loginUserDto.email })
+        if ( !user ) throw CustomError.notFound('Email does not exist');
 
         // Verificar la contraseña
-        const isValid = bcryptAdapter.compare(loginUserDto.password, existUser.password);
-        if ( !isValid ) throw CustomError.badRequest('Invalid password');
+        const isMatching = bcryptAdapter.compare(loginUserDto.password, user.password);
+        if ( !isMatching ) throw CustomError.badRequest('Password is not valid');
 
         // JWT <---- para mantener la autenticación del usuario
         // Email de confirmación
-        console.log(`User ${existUser.email} logged in`);
+        console.log(`User ${user.email} logged in`);
 
-        const { password, ...rest } = UserEntity.fromObject(existUser);
+        const { password, ...rest } = UserEntity.fromObject(user);
+
+        const token = await JwtAdapter.generateToken({ id: user.id, email: user.email });
+        if ( !token ) throw CustomError.internalServer('Error while creating JWT');
+
         return {
             user: rest,
-            token: 'ABC'
+            token: token
         }
 
         
