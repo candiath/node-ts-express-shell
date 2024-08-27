@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CustomError } from "../../domain";
+import { CreateCategoryDto, CustomError } from "../../domain";
 
 
 export class CategoryController {
@@ -17,7 +17,11 @@ export class CategoryController {
     }
 
     createCategory = async ( req: Request, res: Response ) => {
-        return res.json('Create category');
+        const [ error, createCategoryDto ] = CreateCategoryDto.create(req.body);
+        //! No va new porque es un metodo estático
+
+        if ( error ) return res.status(400).json({ error });
+        return res.json(createCategoryDto);
     }
 
     getCategories = async ( req: Request, res: Response ) => {
