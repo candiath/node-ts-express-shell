@@ -17,11 +17,13 @@ export class CategoryController {
     }
 
     createCategory = async ( req: Request, res: Response ) => {
-        const [ error, createCategoryDto ] = CreateCategoryDto.create(req.body);
-        //! No va new porque es un metodo estático
+        // const [ error, createCategoryDto ] = CreateCategoryDto.create(req.body);
+        // //! No va new porque es un metodo estático
 
-        if ( error ) return res.status(400).json({ error });
-        return res.json(createCategoryDto);
+        // if ( error ) return res.status(400).json({ error });
+        // return res.json(createCategoryDto);
+
+        res.json(req.body);
     }
 
     getCategories = async ( req: Request, res: Response ) => {
