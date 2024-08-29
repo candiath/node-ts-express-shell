@@ -1,3 +1,4 @@
+import { create } from "domain";
 
 
 export class CreateProductDto {
@@ -10,7 +11,7 @@ export class CreateProductDto {
         public readonly category: string, // ID
     ) {}
 
-    static create( props: { [key: string ]: any }: [string?, CreateProductDto?]) {
+    static create( props: { [key: string ]: any }): [string?, CreateProductDto?] {
 
         const {
             name,
@@ -20,5 +21,22 @@ export class CreateProductDto {
             user,
             category,
         } = props;
+
+
+        if ( !name ) return [ 'Missing name' ];
+        if ( !user ) return [ 'Missing user' ];
+        if ( !category ) return [ 'Missing category' ];
+
+        return [
+            undefined,
+            new CreateProductDto(
+                name,
+                !!available,
+                price,
+                description,
+                user,
+                category,
+            )
+        ]
     }
 }
