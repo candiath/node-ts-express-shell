@@ -15,11 +15,11 @@ export class ProductService {
 
         try {
             
-            const product = new ProductModel({ createProductDto });
+            const product = new ProductModel( createProductDto );
 
             await product.save();
 
-            return {product};
+            return product;
 
 
         } catch (error) {
