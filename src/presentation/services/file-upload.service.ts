@@ -22,7 +22,7 @@ export class FileUploadService {
     async uploadSingle(
         file: UploadedFile,
         folder: string = 'uploads',
-        validExtensions: string[] = ['png', 'gif'],
+        validExtensions: string[] = ['png', 'jpg', 'jpeg', 'gif'],
     ) {
 
         try { 
@@ -39,7 +39,7 @@ export class FileUploadService {
 
             return { fileName };
         } catch (error) {
-            console.log({error})
+            // console.log({error})
             throw error;
         }
 
