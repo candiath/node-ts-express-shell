@@ -13,7 +13,7 @@ export class FileUploadMiddleware {
         if ( !Array.isArray( req.files.file ) ) {
             req.body.files = [ req.files.file ];
         } else {
-            req.body.files = req.files.files; 
+            req.body.files = req.files.file; 
             // * El ultimo "file" de la linea de arriba hace referencia al nombre 
             // * del campo de la petición de Postman
         }
